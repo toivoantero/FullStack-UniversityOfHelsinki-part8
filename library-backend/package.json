@@ -8,6 +8,10 @@
     "dev": "node --watch index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "graphql": {
+  "schema": "https://localhost:3001/graphql",
+  "documents": "**/*.{graphql,js,ts,jsx,tsx}"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
