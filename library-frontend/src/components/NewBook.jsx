@@ -18,12 +18,17 @@ const ALL_BOOKS = gql`
     allBooks {
       id
       title
-      author
+      author {
+        name
+        id
+        born
+        bookCount
+      }
       published
+      genres
     }
   }
 `
-
 const NewBook = (props) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
@@ -32,7 +37,16 @@ const NewBook = (props) => {
   const [genres, setGenres] = useState([])
 
   const [createBook] = useMutation(CREATE_BOOK, {
-    refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }],
+    refetchQueries: [{ query: ALL_AUTHORS }, { query: ALL_BOOKS }],
+    /*
+    update: (cache, response) => {
+      cache.updateQuery({ query: ALL_BOOKS, variables: { genre } }, ({ allBooks }) => {
+        return {
+          allBooks: allBooks.concat(response.data.addBook),
+        }
+      })
+    },
+    */
   })
 
   if (!props.show) {
@@ -61,37 +75,40 @@ const NewBook = (props) => {
       <form onSubmit={submit}>
         <div>
           <label>
-          title
-          <input
-            value={title}
-            onChange={({ target }) => setTitle(target.value)}
-          />
+            title
+            <input
+              value={title}
+              onChange={({ target }) => setTitle(target.value)}
+            />
           </label>
         </div>
         <div>
           <label>
-          author
-          <input
-            value={author}
-            onChange={({ target }) => setAuthor(target.value)}
-          />
+            author
+            <input
+              value={author}
+              onChange={({ target }) => setAuthor(target.value)}
+            />
           </label>
         </div>
         <div>
           <label>
-          published
-          <input
-            type="number"
-            value={published}
-            onChange={({ target }) => setPublished(target.value)}
-          />
+            published
+            <input
+              type="number"
+              value={published}
+              onChange={({ target }) => setPublished(target.value)}
+            />
           </label>
         </div>
         <div>
-          <input
-            value={genre}
-            onChange={({ target }) => setGenre(target.value)}
-          />
+          <label>
+            genre
+            <input
+              value={genre}
+              onChange={({ target }) => setGenre(target.value)}
+            />
+          </label>
           <button onClick={addGenre} type="button">
             add genre
           </button>

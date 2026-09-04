@@ -14,7 +14,7 @@ const ALL_AUTHORS = gql`
   }
 `
 
-const Authors = ({ show, authors }) => {
+const Authors = ({ show, authors, token }) => {
   const [name, setName] = useState('')
   const [born, setBorn] = useState('')
 
@@ -55,31 +55,37 @@ const Authors = ({ show, authors }) => {
         </tbody>
       </table>
 
-      <h2>Set birthyear</h2>
+      {token && <>
+        <h2>Set birthyear</h2>
 
-      <form onSubmit={submit}>
-        <div>
-          name
-          <select
-            value={name || ""}
-            onChange={({ target }) => setName(target.value)}
-          >
-            <option value="" disabled hidden>Select an option</option>
-            {authors.map((a) => (
-              <option key={a.id}>
-                {a.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          born <input
-            value={born}
-            onChange={({ target }) => setBorn(target.value)}
-          />
-        </div>
-        <button type='submit'>update author</button>
-      </form>
+        <form onSubmit={submit}>
+          <div>
+            name
+            <select
+              value={name || ""}
+              onChange={({ target }) => setName(target.value)}
+              name='name'
+            >
+              <option value="" disabled hidden>Select an option</option>
+              {authors.map((a) => (
+                <option key={a.id}>
+                  {a.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label>
+              born <input
+                value={born}
+                onChange={({ target }) => setBorn(target.value)}
+              />
+            </label>
+          </div>
+          <button type='submit'>update author</button>
+        </form>
+      </>
+      }
     </div>
   )
 }
